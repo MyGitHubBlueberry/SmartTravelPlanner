@@ -7,17 +7,17 @@ public partial class MainForm : Form
         InitializeComponent();
     }
 
-    private void textBox1_TextChanged(object sender, EventArgs e)
+    private void boxName_TextChanged(object sender, EventArgs e)
     {
 
     }
 
-    private void label1_Click(object sender, EventArgs e)
+    private void lblName_Click(object sender, EventArgs e)
     {
 
     }
 
-    private void label1_Click_1(object sender, EventArgs e)
+    private void lblStartingLocation_Click(object sender, EventArgs e)
     {
 
     }
@@ -31,4 +31,13 @@ public partial class MainForm : Form
     {
 
     }
+    private void boxStartingLocation_TextChanged(object sender, EventArgs e) { }
+    private void grbTravaler_Enter(object sender, EventArgs e) { }
+    private void grbActions_Enter(object sender, EventArgs e) { }
+    private void btnClear_Click(object sender, EventArgs e) { }
+    private void btnExit_Click(object sender, EventArgs e) { }
+    private void btnLoad_Click(object sender, EventArgs e) { }
+    private void lblDestination_Click(object sender, EventArgs e) { }
+    private void lblDistText_Click(object sender, EventArgs e) { }
+    private void lblDistNumber_Click(object sender, EventArgs e) { }
 }

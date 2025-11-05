@@ -1,4 +1,6 @@
-﻿namespace SmartTravelPlanner
+﻿using System.Xml.Linq;
+
+namespace SmartTravelPlanner
 {
     partial class MainForm
     {
@@ -63,7 +65,7 @@
             boxName.Size = new Size(114, 27);
             boxName.TabIndex = 0;
             boxName.Text = "Alice";
-            boxName.TextChanged += textBox1_TextChanged;
+            boxName.TextChanged += boxName_TextChanged;
             // 
             // lblName
             // 
@@ -73,7 +75,7 @@
             lblName.Size = new Size(52, 20);
             lblName.TabIndex = 1;
             lblName.Text = "Name:";
-            lblName.Click += label1_Click;
+            lblName.Click += lblName_Click;
             // 
             // lblStartingLocation
             // 
@@ -83,7 +85,7 @@
             lblStartingLocation.Size = new Size(122, 20);
             lblStartingLocation.TabIndex = 2;
             lblStartingLocation.Text = "Starting location:";
-            lblStartingLocation.Click += label1_Click_1;
+            lblStartingLocation.Click += lblStartingLocation_Click;
             // 
             // boxStartingLocation
             // 
@@ -119,7 +121,7 @@
             grbTravaler.TabIndex = 5;
             grbTravaler.TabStop = false;
             grbTravaler.Text = "Basic info";
-            grbTravaler.Enter += this.groupBox1_Enter;
+            grbTravaler.Enter += this.grbTravaler_Enter;
             // 
             // grbActions
             // 
@@ -133,7 +135,7 @@
             grbActions.TabIndex = 6;
             grbActions.TabStop = false;
             grbActions.Text = "Actions";
-            grbActions.Enter += this.groupBox2_Enter;
+            grbActions.Enter += this.grbActions_Enter;
             // 
             // btnClear
             // 
@@ -173,7 +175,7 @@
             btnLoad.TabIndex = 6;
             btnLoad.Text = "Load";
             btnLoad.UseVisualStyleBackColor = true;
-            btnLoad.Click += this.button1_Click;
+            btnLoad.Click += this.btnLoad_Click;
             // 
             // grbPlans
             // 
@@ -209,7 +211,7 @@
             lblDestination.Size = new Size(88, 20);
             lblDestination.TabIndex = 4;
             lblDestination.Text = "Destination:";
-            lblDestination.Click += this.label1_Click_2;
+            lblDestination.Click += this.lblDestination_Click;
             // 
             // boxDestination
             // 
@@ -255,7 +257,7 @@
             lblDistText.Size = new Size(104, 20);
             lblDistText.TabIndex = 9;
             lblDistText.Text = "Total distance:";
-            lblDistText.Click += this.label1_Click_3;
+            lblDistText.Click += this.lblDistText_Click;
             // 
             // lblRoute
             // 
@@ -274,7 +276,7 @@
             lblDistNumber.Size = new Size(17, 20);
             lblDistNumber.TabIndex = 11;
             lblDistNumber.Text = "0";
-            lblDistNumber.Click += this.label1_Click_4;
+            lblDistNumber.Click += this.lblDistNumber_Click;
             // 
             // MainForm
             // 
