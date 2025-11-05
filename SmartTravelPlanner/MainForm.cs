@@ -1,8 +1,8 @@
 namespace SmartTravelPlanner;
 
-public partial class CreateTraveler : Form
+public partial class MainForm : Form
 {
-    public CreateTraveler()
+    public MainForm()
     {
         InitializeComponent();
     }
@@ -18,6 +18,16 @@ public partial class CreateTraveler : Form
     }
 
     private void label1_Click_1(object sender, EventArgs e)
+    {
+
+    }
+
+    private void btnCreateTraveler_Click(object sender, EventArgs e)
+    {
+
+    }
+
+    private void btnSave_Click(object sender, EventArgs e)
     {
 
     }
