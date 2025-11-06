@@ -1,3 +1,5 @@
+using System.Security;
+using System.Windows.Forms;
 using Travelling;
 
 namespace SmartTravelPlanner;
@@ -31,8 +33,8 @@ public partial class MainForm : Form
 
     private void btnCreateTraveler_Click(object sender, EventArgs e)
     {
-        string travelerName = boxName.Text;
-        string startLocation = boxStartingLocation.Text;
+        string travelerName = boxName.Text.Trim();
+        string startLocation = boxStartingLocation.Text.Trim();
 
         if (string.IsNullOrWhiteSpace(travelerName) || string.IsNullOrWhiteSpace(startLocation))
         {
@@ -70,6 +72,7 @@ public partial class MainForm : Form
 
     private void btnPlan_Click(object sender, EventArgs e)
     {
+        string desiination = boxDestination.Text.Trim();
         if (traveler is null)
         {
             MessageBox.Show("Please create a traveler first.", "Empty Traveler", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -80,12 +83,12 @@ public partial class MainForm : Form
             MessageBox.Show("Please load a map first.", "Empty Map", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
-        if (string.IsNullOrEmpty(boxDestination.Text))
+        if (string.IsNullOrEmpty(desiination))
         {
             MessageBox.Show("Please enter a destination.", "Empty Destination", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
-        if (!traveler.PlanRouteTo(boxDestination.Text, map))
+        if (!traveler.PlanRouteTo(desiination, map))
         {
             MessageBox.Show("Destination is not reachable or not in the map.", "Destination Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return;
@@ -101,4 +104,23 @@ public partial class MainForm : Form
     {
 
     }
+
+    private void fdLoadMap_FileOk(object sender, EventArgs e)
+    {
+        //todo process file not ok in another event
+        CityGraph cityGraph = new CityGraph();
+        try
+        {
+            cityGraph = CityGraph.LoadFromFile(fdLoadMap.FileName);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred while loading the file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        map = cityGraph;
+        lblDistNumber.Text = map.ToString();
+    }
+
+    private void btnLoadMap_Click(object sender, EventArgs e) => fdLoadMap.ShowDialog();
 }

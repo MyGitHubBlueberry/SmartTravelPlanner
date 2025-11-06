@@ -51,6 +51,7 @@ namespace SmartTravelPlanner
             lblRoute = new Label();
             lblDistText = new Label();
             lsbRoute = new ListBox();
+            fdLoadMap = new OpenFileDialog();
             grbTravaler.SuspendLayout();
             grbActions.SuspendLayout();
             grbPlans.SuspendLayout();
@@ -217,6 +218,7 @@ namespace SmartTravelPlanner
             btnLoadMap.TabIndex = 6;
             btnLoadMap.Text = "Load Map";
             btnLoadMap.UseVisualStyleBackColor = true;
+            btnLoadMap.Click += btnLoadMap_Click;
             // 
             // lblDestination
             // 
@@ -292,6 +294,12 @@ namespace SmartTravelPlanner
             lsbRoute.TabIndex = 8;
             lsbRoute.SelectedIndexChanged += lsbRoute_SelectedIndexChanged;
             // 
+            // fdLoadMap
+            // 
+            fdLoadMap.FileName = "map";
+            fdLoadMap.Title = "LoadMap";
+            fdLoadMap.FileOk += fdLoadMap_FileOk;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -336,5 +344,6 @@ namespace SmartTravelPlanner
         private Label lblRoute;
         private Label lblDistText;
         private Label lblDistNumber;
+        private OpenFileDialog fdLoadMap;
     }
 }
