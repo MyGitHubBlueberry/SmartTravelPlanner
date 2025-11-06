@@ -36,31 +36,22 @@ public partial class MainForm : Form
 
         if (string.IsNullOrWhiteSpace(travelerName) || string.IsNullOrWhiteSpace(startLocation))
         {
-            // TODO: поміняти як скажуть в слаку
             MessageBox.Show("Please enter both a name and a starting location.", "Empty Fields", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
-        try
-        { 
-            this.traveler = new Traveler(travelerName);
-            this.traveler.SetLocation(startLocation);
+        this.traveler = new Traveler(travelerName);
+        this.traveler.SetLocation(startLocation);
 
-            // Зробив поки так, якщо хочеш прибери
-            MessageBox.Show($"Traveler '{travelerName}' created and set to '{startLocation}'.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-        catch (Exception ex)
-        {
-            // Хай буде для безпеки
-            MessageBox.Show($"An error occurred while creating the traveler: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        //todo: remove
+        MessageBox.Show($"Traveler '{travelerName}' created and set to '{startLocation}'.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void btnSave_Click(object sender, EventArgs e)
     {
 
     }
-    
+
     private void btnClear_Click(object sender, EventArgs e)
     {
         if (this.traveler is not null)
@@ -76,4 +67,38 @@ public partial class MainForm : Form
         this.Close();
     }
     private void btnLoad_Click(object sender, EventArgs e) { }
+
+    private void btnPlan_Click(object sender, EventArgs e)
+    {
+        if (traveler is null)
+        {
+            MessageBox.Show("Please create a traveler first.", "Empty Traveler", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        if (map is null)
+        {
+            MessageBox.Show("Please load a map first.", "Empty Map", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        if (string.IsNullOrEmpty(boxDestination.Text))
+        {
+            MessageBox.Show("Please enter a destination.", "Empty Destination", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+        if (!traveler.PlanRouteTo(boxDestination.Text, map))
+        {
+            MessageBox.Show("Destination is not reachable or not in the map.", "Destination Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return;
+        }
+
+        //todo maybe do it through events
+        lblDistNumber.Text = map.GetPathDistance(map.FindShortestPath(traveler.GetLocation(), boxDestination.Text)).ToString();
+        lsbRoute.Items.Clear();
+        lsbRoute.Items.AddRange(traveler.GetRoute().Split(" -> "));
+    }
+
+    private void lsbRoute_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
 }
