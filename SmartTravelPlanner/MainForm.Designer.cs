@@ -51,6 +51,11 @@ namespace SmartTravelPlanner
             lblRoute = new Label();
             lblDistText = new Label();
             lsbRoute = new ListBox();
+            fdSaveTraveler = new SaveFileDialog();
+            fdLoadTraveler = new OpenFileDialog();
+            lblRoute = new Label();
+            lblDistText = new Label();
+            lsbRoute = new ListBox();
             fdLoadMap = new OpenFileDialog();
             grbTravaler.SuspendLayout();
             grbActions.SuspendLayout();
@@ -280,9 +285,10 @@ namespace SmartTravelPlanner
             lblDistText.Size = new Size(83, 15);
             lblDistText.TabIndex = 9;
             lblDistText.Text = "Total distance:";
-            lblDistText.Click += lblDistText_Click;
+            lblDistText.Click += this.lblDistText_Click;
             // 
             // lsbRoute
+            // fdSaveTraveler
             // 
             lsbRoute.FormattingEnabled = true;
             lsbRoute.ItemHeight = 15;
@@ -293,9 +299,15 @@ namespace SmartTravelPlanner
             lsbRoute.Size = new Size(605, 79);
             lsbRoute.TabIndex = 8;
             lsbRoute.SelectedIndexChanged += lsbRoute_SelectedIndexChanged;
+            fdSaveTraveler.Title = "Save Traveler";
+            fdSaveTraveler.FileOk += fdSaveTraveler_FileOk;
             // 
+            // fdLoadTraveler
             // fdLoadMap
             // 
+            fdLoadTraveler.FileName = "openFileDialog1";
+            fdLoadTraveler.Title = "Load Traveler";
+            fdLoadTraveler.FileOk += fdLoadTraveler_FileOk;
             fdLoadMap.FileName = "map";
             fdLoadMap.Title = "LoadMap";
             fdLoadMap.FileOk += fdLoadMap_FileOk;
@@ -344,6 +356,8 @@ namespace SmartTravelPlanner
         private Label lblRoute;
         private Label lblDistText;
         private Label lblDistNumber;
+        private SaveFileDialog fdSaveTraveler;
+        private OpenFileDialog fdLoadTraveler;
         private OpenFileDialog fdLoadMap;
     }
 }
