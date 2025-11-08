@@ -30,6 +30,7 @@ namespace SmartTravelPlanner
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             boxName = new TextBox();
             lblName = new Label();
             lblStartingLocation = new Label();
@@ -57,14 +58,17 @@ namespace SmartTravelPlanner
             btnAddCity = new Button();
             btnRemoveCity = new Button();
             cmbCityToRemove = new ComboBox();
+            travelerBindingSource = new BindingSource(components);
             grbTravaler.SuspendLayout();
             grbActions.SuspendLayout();
             grbPlans.SuspendLayout();
             grbResults.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)travelerBindingSource).BeginInit();
             SuspendLayout();
             // 
             // boxName
             // 
+            boxName.DataBindings.Add(new Binding("Text", travelerBindingSource, "name", true));
             boxName.Location = new Point(128, 26);
             boxName.Name = "boxName";
             boxName.Size = new Size(100, 23);
@@ -342,6 +346,10 @@ namespace SmartTravelPlanner
             cmbCityToRemove.Size = new Size(207, 23);
             cmbCityToRemove.TabIndex = 14;
             // 
+            // travelerBindingSource
+            // 
+            travelerBindingSource.DataSource = typeof(Travelling.Traveler);
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -360,6 +368,7 @@ namespace SmartTravelPlanner
             grbPlans.PerformLayout();
             grbResults.ResumeLayout(false);
             grbResults.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)travelerBindingSource).EndInit();
             ResumeLayout(false);
         }
 
@@ -392,5 +401,6 @@ namespace SmartTravelPlanner
         private ComboBox cmbCityToRemove;
         private Button btnRemoveCity;
         private Button btnAddCity;
+        private BindingSource travelerBindingSource;
     }
 }
