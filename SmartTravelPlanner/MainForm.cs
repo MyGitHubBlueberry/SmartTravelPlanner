@@ -197,4 +197,9 @@ public partial class MainForm : Form
     }
 
     private void btnLoadMap_Click(object sender, EventArgs e) => fdLoadMap.ShowDialog();
+
+    private void travelerBindingSource_CurrentChanged(object sender, EventArgs e)
+    {
+
+    }
 }

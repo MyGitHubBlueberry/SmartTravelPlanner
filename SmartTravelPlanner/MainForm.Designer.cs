@@ -30,7 +30,6 @@ namespace SmartTravelPlanner
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             boxName = new TextBox();
             lblName = new Label();
             lblStartingLocation = new Label();
@@ -48,6 +47,9 @@ namespace SmartTravelPlanner
             lblDestination = new Label();
             boxDestination = new TextBox();
             grbResults = new GroupBox();
+            cmbCityToRemove = new ComboBox();
+            btnRemoveCity = new Button();
+            btnAddCity = new Button();
             lblDistNumber = new Label();
             lblRoute = new Label();
             lblDistText = new Label();
@@ -55,20 +57,15 @@ namespace SmartTravelPlanner
             fdSaveTraveler = new SaveFileDialog();
             fdLoadTraveler = new OpenFileDialog();
             fdLoadMap = new OpenFileDialog();
-            btnAddCity = new Button();
-            btnRemoveCity = new Button();
-            cmbCityToRemove = new ComboBox();
-            travelerBindingSource = new BindingSource(components);
+            textBox1 = new TextBox();
             grbTravaler.SuspendLayout();
             grbActions.SuspendLayout();
             grbPlans.SuspendLayout();
             grbResults.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)travelerBindingSource).BeginInit();
             SuspendLayout();
             // 
             // boxName
             // 
-            boxName.DataBindings.Add(new Binding("Text", travelerBindingSource, "name", true));
             boxName.Location = new Point(128, 26);
             boxName.Name = "boxName";
             boxName.Size = new Size(100, 23);
@@ -246,6 +243,7 @@ namespace SmartTravelPlanner
             // 
             // grbResults
             // 
+            grbResults.Controls.Add(textBox1);
             grbResults.Controls.Add(cmbCityToRemove);
             grbResults.Controls.Add(btnRemoveCity);
             grbResults.Controls.Add(btnAddCity);
@@ -261,6 +259,32 @@ namespace SmartTravelPlanner
             grbResults.TabIndex = 8;
             grbResults.TabStop = false;
             grbResults.Text = "Route Details";
+            // 
+            // cmbCityToRemove
+            // 
+            cmbCityToRemove.FormattingEnabled = true;
+            cmbCityToRemove.Location = new Point(414, 161);
+            cmbCityToRemove.Name = "cmbCityToRemove";
+            cmbCityToRemove.Size = new Size(207, 23);
+            cmbCityToRemove.TabIndex = 14;
+            // 
+            // btnRemoveCity
+            // 
+            btnRemoveCity.Location = new Point(324, 161);
+            btnRemoveCity.Name = "btnRemoveCity";
+            btnRemoveCity.Size = new Size(75, 23);
+            btnRemoveCity.TabIndex = 13;
+            btnRemoveCity.Text = "Remove City";
+            btnRemoveCity.UseVisualStyleBackColor = true;
+            // 
+            // btnAddCity
+            // 
+            btnAddCity.Location = new Point(16, 161);
+            btnAddCity.Name = "btnAddCity";
+            btnAddCity.Size = new Size(75, 23);
+            btnAddCity.TabIndex = 12;
+            btnAddCity.Text = "Add City";
+            btnAddCity.UseVisualStyleBackColor = true;
             // 
             // lblDistNumber
             // 
@@ -320,35 +344,12 @@ namespace SmartTravelPlanner
             fdLoadMap.Title = "LoadMap";
             fdLoadMap.FileOk += fdLoadMap_FileOk;
             // 
-            // btnAddCity
+            // textBox1
             // 
-            btnAddCity.Location = new Point(16, 161);
-            btnAddCity.Name = "btnAddCity";
-            btnAddCity.Size = new Size(75, 23);
-            btnAddCity.TabIndex = 12;
-            btnAddCity.Text = "Add City";
-            btnAddCity.UseVisualStyleBackColor = true;
-            // 
-            // btnRemoveCity
-            // 
-            btnRemoveCity.Location = new Point(324, 161);
-            btnRemoveCity.Name = "btnRemoveCity";
-            btnRemoveCity.Size = new Size(75, 23);
-            btnRemoveCity.TabIndex = 13;
-            btnRemoveCity.Text = "Remove City";
-            btnRemoveCity.UseVisualStyleBackColor = true;
-            // 
-            // cmbCityToRemove
-            // 
-            cmbCityToRemove.FormattingEnabled = true;
-            cmbCityToRemove.Location = new Point(414, 161);
-            cmbCityToRemove.Name = "cmbCityToRemove";
-            cmbCityToRemove.Size = new Size(207, 23);
-            cmbCityToRemove.TabIndex = 14;
-            // 
-            // travelerBindingSource
-            // 
-            travelerBindingSource.DataSource = typeof(Travelling.Traveler);
+            textBox1.Location = new Point(97, 162);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(210, 23);
+            textBox1.TabIndex = 15;
             // 
             // MainForm
             // 
@@ -368,7 +369,6 @@ namespace SmartTravelPlanner
             grbPlans.PerformLayout();
             grbResults.ResumeLayout(false);
             grbResults.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)travelerBindingSource).EndInit();
             ResumeLayout(false);
         }
 
@@ -401,6 +401,6 @@ namespace SmartTravelPlanner
         private ComboBox cmbCityToRemove;
         private Button btnRemoveCity;
         private Button btnAddCity;
-        private BindingSource travelerBindingSource;
+        private TextBox textBox1;
     }
 }
