@@ -53,9 +53,6 @@ namespace SmartTravelPlanner
             lsbRoute = new ListBox();
             fdSaveTraveler = new SaveFileDialog();
             fdLoadTraveler = new OpenFileDialog();
-            lblRoute = new Label();
-            lblDistText = new Label();
-            lsbRoute = new ListBox();
             fdLoadMap = new OpenFileDialog();
             grbTravaler.SuspendLayout();
             grbActions.SuspendLayout();
@@ -69,7 +66,6 @@ namespace SmartTravelPlanner
             boxName.Name = "boxName";
             boxName.Size = new Size(100, 23);
             boxName.TabIndex = 0;
-            boxName.Text = "Alice";
             boxName.TextChanged += boxName_TextChanged;
             // 
             // lblName
@@ -98,7 +94,6 @@ namespace SmartTravelPlanner
             boxStartingLocation.Name = "boxStartingLocation";
             boxStartingLocation.Size = new Size(100, 23);
             boxStartingLocation.TabIndex = 3;
-            boxStartingLocation.Text = "Kyiv";
             boxStartingLocation.TextChanged += boxStartingLocation_TextChanged;
             // 
             // btnCreateTraveler
@@ -241,7 +236,6 @@ namespace SmartTravelPlanner
             boxDestination.Name = "boxDestination";
             boxDestination.Size = new Size(134, 23);
             boxDestination.TabIndex = 5;
-            boxDestination.Text = "Kyiv";
             // 
             // grbResults
             // 
@@ -285,10 +279,9 @@ namespace SmartTravelPlanner
             lblDistText.Size = new Size(83, 15);
             lblDistText.TabIndex = 9;
             lblDistText.Text = "Total distance:";
-            lblDistText.Click += this.lblDistText_Click;
+            lblDistText.Click += lblDistText_Click;
             // 
             // lsbRoute
-            // fdSaveTraveler
             // 
             lsbRoute.FormattingEnabled = true;
             lsbRoute.ItemHeight = 15;
@@ -299,15 +292,20 @@ namespace SmartTravelPlanner
             lsbRoute.Size = new Size(605, 79);
             lsbRoute.TabIndex = 8;
             lsbRoute.SelectedIndexChanged += lsbRoute_SelectedIndexChanged;
+            // 
+            // fdSaveTraveler
+            // 
             fdSaveTraveler.Title = "Save Traveler";
             fdSaveTraveler.FileOk += fdSaveTraveler_FileOk;
             // 
             // fdLoadTraveler
-            // fdLoadMap
             // 
             fdLoadTraveler.FileName = "openFileDialog1";
             fdLoadTraveler.Title = "Load Traveler";
             fdLoadTraveler.FileOk += fdLoadTraveler_FileOk;
+            // 
+            // fdLoadMap
+            // 
             fdLoadMap.FileName = "map";
             fdLoadMap.Title = "LoadMap";
             fdLoadMap.FileOk += fdLoadMap_FileOk;
