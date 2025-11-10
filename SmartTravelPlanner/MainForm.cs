@@ -1,110 +1,130 @@
+using System.IO;
 using System.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Forms;
 using Travelling;
-using System.IO;
 
 namespace SmartTravelPlanner;
 
 public partial class MainForm : Form
 {
-    private Traveler? traveler;
-    private CityGraph? map;
+    private readonly TravelerViewModel viewModel;
 
     public MainForm()
     {
         InitializeComponent();
-    }
-    // ==============================================================
-    // Empty event handlers for UI components that mustn't do anything
-    // ==============================================================
-    // Text Boxes changed
-    private void boxName_TextChanged(object sender, EventArgs e) { }
-    private void boxStartingLocation_TextChanged(object sender, EventArgs e) { }
-    // Labels
-    private void lblName_Click(object sender, EventArgs e) { }
-    private void lblStartingLocation_Click(object sender, EventArgs e) { }
-    private void lblDestination_Click(object sender, EventArgs e) { }
-    private void lblDistText_Click(object sender, EventArgs e) { }
-    private void lblDistNumber_Click(object sender, EventArgs e) { }
-    // Group Boxes
-    private void grbTravaler_Enter(object sender, EventArgs e) { }
-    private void grbActions_Enter(object sender, EventArgs e) { }
-    // ==============================================================
-    // TODO
-
-    private void btnCreateTraveler_Click(object sender, EventArgs e)
-    {
-        string travelerName = boxName.Text.Trim();
-        string startLocation = boxStartingLocation.Text.Trim();
-
-        if (string.IsNullOrWhiteSpace(travelerName) || string.IsNullOrWhiteSpace(startLocation))
-        {
-            MessageBox.Show("Please enter both a name and a starting location.", "Empty Fields", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
-
-        this.traveler = new Traveler(travelerName);
-        this.traveler.SetLocation(startLocation);
-
-        //todo: remove
-        MessageBox.Show($"Traveler '{travelerName}' created and set to '{startLocation}'.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        viewModel = new TravelerViewModel();
+        BindFileds();
+        BindButtons();
     }
 
-    private void UpdateUIFromTraveler()
+    private void BindFileds()
     {
-        if (this.traveler is null) return;
+        boxName.DataBindings.Add("Text", viewModel,
+            nameof(viewModel.NewName), false, DataSourceUpdateMode.OnPropertyChanged);
+        boxStartingLocation.DataBindings.Add("Text", viewModel,
+            nameof(viewModel.CurrentLocation), false, DataSourceUpdateMode.OnPropertyChanged);
+        boxDestination.DataBindings.Add("Text", viewModel,
+            nameof(viewModel.Destination), false, DataSourceUpdateMode.OnPropertyChanged);
+        boxAddCity.DataBindings.Add("Text", viewModel,
+            nameof(viewModel.CityToAdd), false, DataSourceUpdateMode.OnPropertyChanged);
 
-        boxName.Text = this.traveler.GetName();
-        boxStartingLocation.Text = this.traveler.GetLocation();
+        lsbRoute.DataBindings.Add("DataSource", viewModel,
+            nameof(TravelerViewModel.Route));
 
-        lsbRoute.Items.Clear();
-        var routeList = new List<string>();
+        cmbCityToRemove.DataBindings.Add("DataSource", viewModel,
+            nameof(TravelerViewModel.Route));
+        cmbCityToRemove.DataBindings.Add("SelectedItem", viewModel,
+            nameof(TravelerViewModel.CityToRemove), true, DataSourceUpdateMode.OnPropertyChanged);
 
-        if (this.traveler.GetStopCount() > 0)
+        lblRoute.DataBindings.Add("Text", viewModel,
+            nameof(viewModel.JoiedRoute));
+        lblDistNumber.DataBindings.Add("Text", viewModel,
+            nameof(viewModel.Distance));
+    }
+
+    private void BindButtons()
+    {
+        btnCreateTraveler.Click += (s, e) => CreateTraveler();
+        btnLoadMap.Click += (s, e) =>
         {
-            for (int i = 0; i < this.traveler.GetStopCount(); i++)
+            if (!viewModel.IsTravelerCreated)
             {
-                string city = this.traveler[i];
-                lsbRoute.Items.Add(city);
-                routeList.Add(city);
+                MessageBox.Show("Please create a traveler first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-        }
-
-        if (this.map != null && routeList.Count > 1)
+            fdLoadMap.ShowDialog();
+        };
+        fdLoadMap.FileOk += (s, e) => LoadMap();
+        btnPlan.Click += (s, e) => PlanRoute();
+        btnSave.Click += (s, e) =>
         {
-            int distance = this.map.GetPathDistance(routeList);
-            lblDistNumber.Text = $"{distance} km";
-        }
-        else
-        {
-            lblDistNumber.Text = "0 km";
-        }
+            if (!viewModel.IsTravelerCreated)
+            {
+                MessageBox.Show("Please create a traveler first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            fdSaveTraveler.ShowDialog();
+        };
+        fdSaveTraveler.FileOk += (s, e) => Save();
+        btnLoad.Click += (s, e) => fdLoadTraveler.ShowDialog();
+        fdLoadTraveler.FileOk += (s, e) => LoadTraveler();
+        btnAddCity.Click += (s, e) => AddCity();
+        btnRemoveCity.Click += (s, e) => RemoveCity();
+        btnClear.Click += (s, e) => ClearRoute();
+        btnExit.Click += (s, e) => Close();
     }
 
-    private void btnSave_Click(object sender, EventArgs e)
+    private void CreateTraveler()
     {
-        if (this.traveler is null)
-        {
-            MessageBox.Show("Please create a traveler first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            return;
-        }
-
-        this.traveler.SetLocation(boxStartingLocation.Text);
-        fdSaveTraveler.ShowDialog();
-    }
-
-    private void fdSaveTraveler_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-        if (this.traveler is null) return;
-
         try
         {
-            // Remove this comment: Auto json file extension, so if user won't add it
+            viewModel.CreateTraveler();
+            MessageBox.Show($"Traveler '{viewModel.NewName}' created and set to '{viewModel.CurrentLocation}'.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        catch (InvalidOperationException)
+        {
+            MessageBox.Show("Please enter both a name and a starting location.", "Empty Fields", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void LoadMap()
+    {
+        try
+        {
+            viewModel.LoadMap(fdLoadMap.FileName);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred while loading the file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+    }
+
+    private void PlanRoute()
+    {
+        try
+        {
+            if (!viewModel.PlanRoute())
+            {
+                MessageBox.Show("Destination is not reachable or not in the map.", "Destination Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            MessageBox.Show("Please ensure that a traveler is created, a map is loaded, and a destination is entered.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+    }
+
+    private void Save()
+    {
+        try
+        {
             if (Path.GetExtension(fdSaveTraveler.FileName).ToLowerInvariant() != ".json")
             {
                 fdSaveTraveler.FileName = Path.ChangeExtension(fdSaveTraveler.FileName, ".json");
             }
-            this.traveler.SaveToFile(fdSaveTraveler.FileName);
+            viewModel.Save(fdSaveTraveler.FileName);
             MessageBox.Show("Traveler saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
@@ -113,93 +133,55 @@ public partial class MainForm : Form
         }
     }
 
-    private void btnLoad_Click(object sender, EventArgs e) => fdLoadTraveler.ShowDialog();
-
-    private void fdLoadTraveler_FileOk(object sender, EventArgs e)
+    private void LoadTraveler()
     {
         try
         {
-            this.traveler = Traveler.LoadFromFile(fdLoadTraveler.FileName);
-            UpdateUIFromTraveler();
+            viewModel.Load(fdLoadTraveler.FileName);
             MessageBox.Show("Traveler loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Invalid .json file during loading", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
     }
 
-    private void btnClear_Click(object sender, EventArgs e)
+    private void AddCity()
     {
-        if (this.traveler is not null)
-        {
-            this.traveler.ClearRoute();
-        }
-
-        lsbRoute.Items.Clear();
-        lblDistNumber.Text = "0";
-    }
-
-    private void btnExit_Click(object sender, EventArgs e)
-    {
-        this.Close();
-    }
-    private void btnPlan_Click(object sender, EventArgs e)
-    {
-        string desiination = boxDestination.Text.Trim();
-        if (traveler is null)
-        {
-            MessageBox.Show("Please create a traveler first.", "Empty Traveler", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
-        if (map is null)
-        {
-            MessageBox.Show("Please load a map first.", "Empty Map", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
-        if (string.IsNullOrEmpty(desiination))
-        {
-            MessageBox.Show("Please enter a destination.", "Empty Destination", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
-        if (!traveler.PlanRouteTo(desiination, map))
-        {
-            MessageBox.Show("Destination is not reachable or not in the map.", "Destination Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            return;
-        }
-
-        //todo maybe do it through events
-        lblDistNumber.Text = map.GetPathDistance(map.FindShortestPath(traveler.GetLocation(), boxDestination.Text)).ToString();
-        lsbRoute.Items.Clear();
-        lsbRoute.Items.AddRange(traveler.GetRoute().Split(" -> "));
-    }
-
-    private void lsbRoute_SelectedIndexChanged(object sender, EventArgs e)
-    {
-
-    }
-
-    private void fdLoadMap_FileOk(object sender, EventArgs e)
-    {
-        //todo process file not ok in another event
-        CityGraph cityGraph = new CityGraph();
         try
         {
-            cityGraph = CityGraph.LoadFromFile(fdLoadMap.FileName);
+            viewModel.AddCity();
         }
-        catch (Exception ex)
+        catch (InvalidOperationException ex)
         {
-            MessageBox.Show($"An error occurred while loading the file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(ex.Message, "Can't add city", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
-        map = cityGraph;
     }
 
-    private void btnLoadMap_Click(object sender, EventArgs e) => fdLoadMap.ShowDialog();
-
-    private void travelerBindingSource_CurrentChanged(object sender, EventArgs e)
+    private void RemoveCity()
     {
+        try
+        {
+            viewModel.RemoveCity();
+        }
+        catch (InvalidOperationException ex)
+        {
+            MessageBox.Show(ex.Message, "Can't remove city", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
+    }
 
+    private void ClearRoute()
+    {
+        try
+        {
+            viewModel.ClearRoute();
+        }
+        catch (InvalidOperationException ex)
+        {
+            MessageBox.Show(ex.Message, "Can't clear route", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            return;
+        }
     }
 }

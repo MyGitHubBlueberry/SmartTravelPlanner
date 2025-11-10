@@ -1,4 +1,4 @@
-﻿using System.Xml.Linq;
+﻿ using System.Xml.Linq;
 
 namespace SmartTravelPlanner
 {
@@ -30,6 +30,7 @@ namespace SmartTravelPlanner
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             boxName = new TextBox();
             lblName = new Label();
             lblStartingLocation = new Label();
@@ -47,6 +48,7 @@ namespace SmartTravelPlanner
             lblDestination = new Label();
             boxDestination = new TextBox();
             grbResults = new GroupBox();
+            boxAddCity = new TextBox();
             cmbCityToRemove = new ComboBox();
             btnRemoveCity = new Button();
             btnAddCity = new Button();
@@ -57,11 +59,12 @@ namespace SmartTravelPlanner
             fdSaveTraveler = new SaveFileDialog();
             fdLoadTraveler = new OpenFileDialog();
             fdLoadMap = new OpenFileDialog();
-            textBox1 = new TextBox();
+            travelerViewModelBindingSource = new BindingSource(components);
             grbTravaler.SuspendLayout();
             grbActions.SuspendLayout();
             grbPlans.SuspendLayout();
             grbResults.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)travelerViewModelBindingSource).BeginInit();
             SuspendLayout();
             // 
             // boxName
@@ -70,7 +73,6 @@ namespace SmartTravelPlanner
             boxName.Name = "boxName";
             boxName.Size = new Size(100, 23);
             boxName.TabIndex = 0;
-            boxName.TextChanged += boxName_TextChanged;
             // 
             // lblName
             // 
@@ -80,7 +82,6 @@ namespace SmartTravelPlanner
             lblName.Size = new Size(42, 15);
             lblName.TabIndex = 1;
             lblName.Text = "Name:";
-            lblName.Click += lblName_Click;
             // 
             // lblStartingLocation
             // 
@@ -90,7 +91,7 @@ namespace SmartTravelPlanner
             lblStartingLocation.Size = new Size(97, 15);
             lblStartingLocation.TabIndex = 2;
             lblStartingLocation.Text = "Starting location:";
-            lblStartingLocation.Click += lblStartingLocation_Click;
+            
             // 
             // boxStartingLocation
             // 
@@ -98,7 +99,7 @@ namespace SmartTravelPlanner
             boxStartingLocation.Name = "boxStartingLocation";
             boxStartingLocation.Size = new Size(100, 23);
             boxStartingLocation.TabIndex = 3;
-            boxStartingLocation.TextChanged += boxStartingLocation_TextChanged;
+            
             // 
             // btnCreateTraveler
             // 
@@ -108,7 +109,6 @@ namespace SmartTravelPlanner
             btnCreateTraveler.TabIndex = 4;
             btnCreateTraveler.Text = "Create Traveler";
             btnCreateTraveler.UseVisualStyleBackColor = true;
-            btnCreateTraveler.Click += btnCreateTraveler_Click;
             // 
             // grbTravaler
             // 
@@ -125,7 +125,6 @@ namespace SmartTravelPlanner
             grbTravaler.TabIndex = 5;
             grbTravaler.TabStop = false;
             grbTravaler.Text = "Basic info";
-            grbTravaler.Enter += grbTravaler_Enter;
             // 
             // grbActions
             // 
@@ -141,7 +140,6 @@ namespace SmartTravelPlanner
             grbActions.TabIndex = 6;
             grbActions.TabStop = false;
             grbActions.Text = "Actions";
-            grbActions.Enter += grbActions_Enter;
             // 
             // btnLoad
             // 
@@ -152,7 +150,6 @@ namespace SmartTravelPlanner
             btnLoad.TabIndex = 6;
             btnLoad.Text = "Load";
             btnLoad.UseVisualStyleBackColor = true;
-            btnLoad.Click += btnLoad_Click;
             // 
             // btnClear
             // 
@@ -163,7 +160,6 @@ namespace SmartTravelPlanner
             btnClear.TabIndex = 5;
             btnClear.Text = "Clear Route";
             btnClear.UseVisualStyleBackColor = true;
-            btnClear.Click += btnClear_Click;
             // 
             // btnExit
             // 
@@ -174,7 +170,6 @@ namespace SmartTravelPlanner
             btnExit.TabIndex = 4;
             btnExit.Text = "Exit";
             btnExit.UseVisualStyleBackColor = true;
-            btnExit.Click += btnExit_Click;
             // 
             // btnSave
             // 
@@ -185,7 +180,6 @@ namespace SmartTravelPlanner
             btnSave.TabIndex = 3;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
-            btnSave.Click += btnSave_Click;
             // 
             // grbPlans
             // 
@@ -211,7 +205,6 @@ namespace SmartTravelPlanner
             btnPlan.TabIndex = 7;
             btnPlan.Text = "Plan Route";
             btnPlan.UseVisualStyleBackColor = true;
-            btnPlan.Click += btnPlan_Click;
             // 
             // btnLoadMap
             // 
@@ -222,7 +215,6 @@ namespace SmartTravelPlanner
             btnLoadMap.TabIndex = 6;
             btnLoadMap.Text = "Load Map";
             btnLoadMap.UseVisualStyleBackColor = true;
-            btnLoadMap.Click += btnLoadMap_Click;
             // 
             // lblDestination
             // 
@@ -232,7 +224,7 @@ namespace SmartTravelPlanner
             lblDestination.Size = new Size(70, 15);
             lblDestination.TabIndex = 4;
             lblDestination.Text = "Destination:";
-            lblDestination.Click += lblDestination_Click;
+            
             // 
             // boxDestination
             // 
@@ -243,7 +235,7 @@ namespace SmartTravelPlanner
             // 
             // grbResults
             // 
-            grbResults.Controls.Add(textBox1);
+            grbResults.Controls.Add(boxAddCity);
             grbResults.Controls.Add(cmbCityToRemove);
             grbResults.Controls.Add(btnRemoveCity);
             grbResults.Controls.Add(btnAddCity);
@@ -259,6 +251,13 @@ namespace SmartTravelPlanner
             grbResults.TabIndex = 8;
             grbResults.TabStop = false;
             grbResults.Text = "Route Details";
+            // 
+            // boxAddCity
+            // 
+            boxAddCity.Location = new Point(97, 162);
+            boxAddCity.Name = "boxAddCity";
+            boxAddCity.Size = new Size(210, 23);
+            boxAddCity.TabIndex = 15;
             // 
             // cmbCityToRemove
             // 
@@ -294,7 +293,7 @@ namespace SmartTravelPlanner
             lblDistNumber.Size = new Size(13, 15);
             lblDistNumber.TabIndex = 11;
             lblDistNumber.Text = "0";
-            lblDistNumber.Click += lblDistNumber_Click;
+            
             // 
             // lblRoute
             // 
@@ -310,10 +309,10 @@ namespace SmartTravelPlanner
             lblDistText.AutoSize = true;
             lblDistText.Location = new Point(16, 24);
             lblDistText.Name = "lblDistText";
-            lblDistText.Size = new Size(83, 15);
+            lblDistText.Size = new Size(82, 15);
             lblDistText.TabIndex = 9;
             lblDistText.Text = "Total distance:";
-            lblDistText.Click += lblDistText_Click;
+            
             // 
             // lsbRoute
             // 
@@ -325,31 +324,24 @@ namespace SmartTravelPlanner
             lsbRoute.SelectionMode = SelectionMode.MultiSimple;
             lsbRoute.Size = new Size(605, 79);
             lsbRoute.TabIndex = 8;
-            lsbRoute.SelectedIndexChanged += lsbRoute_SelectedIndexChanged;
             // 
             // fdSaveTraveler
             // 
             fdSaveTraveler.Title = "Save Traveler";
-            fdSaveTraveler.FileOk += fdSaveTraveler_FileOk;
             // 
             // fdLoadTraveler
             // 
             fdLoadTraveler.FileName = "openFileDialog1";
             fdLoadTraveler.Title = "Load Traveler";
-            fdLoadTraveler.FileOk += fdLoadTraveler_FileOk;
             // 
             // fdLoadMap
             // 
             fdLoadMap.FileName = "map";
             fdLoadMap.Title = "LoadMap";
-            fdLoadMap.FileOk += fdLoadMap_FileOk;
             // 
-            // textBox1
+            // travelerViewModelBindingSource
             // 
-            textBox1.Location = new Point(97, 162);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(210, 23);
-            textBox1.TabIndex = 15;
+            travelerViewModelBindingSource.DataSource = typeof(TravelerViewModel);
             // 
             // MainForm
             // 
@@ -369,6 +361,7 @@ namespace SmartTravelPlanner
             grbPlans.PerformLayout();
             grbResults.ResumeLayout(false);
             grbResults.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)travelerViewModelBindingSource).EndInit();
             ResumeLayout(false);
         }
 
@@ -401,6 +394,7 @@ namespace SmartTravelPlanner
         private ComboBox cmbCityToRemove;
         private Button btnRemoveCity;
         private Button btnAddCity;
-        private TextBox textBox1;
+        private TextBox boxAddCity;
+        private BindingSource travelerViewModelBindingSource;
     }
 }
