@@ -150,4 +150,19 @@ public class CityGraph
             graph.print.Add((node, edge));
         }
     }
+
+    public List<string> GetNeighbors(string city)
+    {
+        var node = new TNode(city);
+        if (adjacencyList.ContainsKey(node))
+        {
+            var neighbors = new List<string>();
+            foreach (var edge in adjacencyList[node])
+            {
+                neighbors.Add(edge.e);
+            }
+            return neighbors;
+        }
+        return new List<string>();
+    }
 }

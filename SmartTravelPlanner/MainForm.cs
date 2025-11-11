@@ -36,10 +36,10 @@ public partial class MainForm : Form
         boxDestination.DataBindings.Add(boxDestinationBinding);
         boxDestinationBinding.Parse += formatting;
 
-        var boxAddCityBinding = new Binding("Text", viewModel,
-            nameof(viewModel.CityToAdd), false, updateMode);
-        boxAddCity.DataBindings.Add(boxAddCityBinding);
-        boxAddCityBinding.Parse += formatting;
+        cmbAddCity.DataBindings.Add("DataSource", viewModel,
+            nameof(viewModel.AvailableNextCities));
+        cmbAddCity.DataBindings.Add("SelectedItem", viewModel,
+            nameof(viewModel.CityToAdd), true, DataSourceUpdateMode.OnPropertyChanged);
 
         lsbRoute.DataBindings.Add("DataSource", viewModel,
             nameof(TravelerViewModel.Route));

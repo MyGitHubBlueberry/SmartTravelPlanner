@@ -83,10 +83,23 @@ public class Traveler : ICloneable
         return t;
     }
 
-    public static bool operator ==(Traveler a, Traveler b) =>
-        a.name == b.name && a.currentLocation == b.currentLocation;
+    public static bool operator ==(Traveler a, Traveler b)
+    {
+        if (a is null && b is null)
+        {
+            return true;
+        }
+
+        if (a is null || b is null)
+        {
+            return false;
+        }
+
+        return a.name == b.name && a.currentLocation == b.currentLocation;
+    }
+
     public static bool operator !=(Traveler a, Traveler b) =>
-        a.name != b.name || a.currentLocation != b.currentLocation;
+        !(a == b);
 
     public int GetStopCount() => route.Count;
     public void SetLocation(string location) => currentLocation = ToTitle(location);
