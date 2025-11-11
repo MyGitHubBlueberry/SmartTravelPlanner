@@ -13,6 +13,28 @@ public class TravelerViewModel : INotifyPropertyChanged
     private string newName;
     private string cityToRemove;
     private string cityToAdd;
+    private List<string> _availableNextCities = new List<string>();
+
+    private void UpdateAvailableNextCities()
+    {
+        if (graph == null || traveler == null)
+        {
+            AvailableNextCities = new List<string>();
+            return;
+        }
+
+        string? lastCity = Route.LastOrDefault();
+        if (!string.IsNullOrEmpty(lastCity))
+        {
+            // Added new method GetNeighbors to CityGraph
+            AvailableNextCities = graph.GetNeighbors(lastCity);
+        }
+        else
+        {
+            // if no cities in route, get neighbors of current location
+            AvailableNextCities = graph.GetNeighbors(traveler.GetLocation());
+        }
+    }
 
     public TravelerViewModel() { }
 
@@ -76,7 +98,15 @@ public class TravelerViewModel : INotifyPropertyChanged
 
     public List<string> Route
     {
-        get { return (traveler?.GetRoute() ?? "").Split(" -> ").ToList(); }
+        get
+        {
+            var routeStr = traveler?.GetRoute();
+            if (string.IsNullOrEmpty(routeStr))
+            {
+                return new List<string>();
+            }
+            return routeStr.Split(" -> ").ToList();
+        }
     }
 
     public string JoiedRoute
@@ -97,6 +127,11 @@ public class TravelerViewModel : INotifyPropertyChanged
         traveler.SetLocation(CurrentLocation);
         OnPropertyChanged(nameof(Route));
         OnPropertyChanged(nameof(Distance));
+        // update available next cities, if traveler was recreated with loaded map
+        if (graph is not null)
+        {
+            UpdateAvailableNextCities();
+        }
     }
 
     public void Save(string filePath) { 
@@ -111,10 +146,12 @@ public class TravelerViewModel : INotifyPropertyChanged
         CurrentLocation = traveler.GetLocation();
         OnPropertyChanged(nameof(Route));
         OnPropertyChanged(nameof(Distance));
+        UpdateAvailableNextCities();
     }
 
     public void LoadMap(string filePath) {
         graph = CityGraph.LoadFromFile(filePath);
+        UpdateAvailableNextCities();
     }
 
     public bool PlanRoute() {
@@ -130,6 +167,7 @@ public class TravelerViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(Distance));
             CityToRemove = Route.FirstOrDefault() ?? "";
             OnPropertyChanged(nameof(CityToRemove));
+            UpdateAvailableNextCities();
             return true;
         }
         return false;
@@ -145,6 +183,7 @@ public class TravelerViewModel : INotifyPropertyChanged
         CityToRemove = cityToAdd;
         CityToAdd = "";
         OnPropertyChanged(nameof(Route));
+        UpdateAvailableNextCities();
     }
 
     public void RemoveCity() {
@@ -157,6 +196,7 @@ public class TravelerViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(Route));
         CityToRemove = Route.FirstOrDefault() ?? "";
         OnPropertyChanged(nameof(CityToRemove));
+        UpdateAvailableNextCities();
     }
 
     public void ClearRoute() {
@@ -167,6 +207,17 @@ public class TravelerViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(Distance));
         CityToRemove = "";
         OnPropertyChanged(nameof(CityToRemove));
+        UpdateAvailableNextCities();
+    }
+
+    public List<string> AvailableNextCities
+    {
+        get { return _availableNextCities; }
+        set
+        {
+            _availableNextCities = value;
+            OnPropertyChanged();
+        }
     }
 
     // Boilerplate code for INotifyPropertyChanged

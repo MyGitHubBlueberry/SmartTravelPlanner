@@ -48,7 +48,6 @@ namespace SmartTravelPlanner
             lblDestination = new Label();
             boxDestination = new TextBox();
             grbResults = new GroupBox();
-            boxAddCity = new TextBox();
             cmbCityToRemove = new ComboBox();
             btnRemoveCity = new Button();
             btnAddCity = new Button();
@@ -60,6 +59,7 @@ namespace SmartTravelPlanner
             fdLoadTraveler = new OpenFileDialog();
             fdLoadMap = new OpenFileDialog();
             travelerViewModelBindingSource = new BindingSource(components);
+            cmbAddCity = new ComboBox();
             grbTravaler.SuspendLayout();
             grbActions.SuspendLayout();
             grbPlans.SuspendLayout();
@@ -232,7 +232,7 @@ namespace SmartTravelPlanner
             // 
             // grbResults
             // 
-            grbResults.Controls.Add(boxAddCity);
+            grbResults.Controls.Add(cmbAddCity);
             grbResults.Controls.Add(cmbCityToRemove);
             grbResults.Controls.Add(btnRemoveCity);
             grbResults.Controls.Add(btnAddCity);
@@ -248,13 +248,6 @@ namespace SmartTravelPlanner
             grbResults.TabIndex = 4;
             grbResults.TabStop = false;
             grbResults.Text = "Route Details";
-            // 
-            // boxAddCity
-            // 
-            boxAddCity.Location = new Point(97, 162);
-            boxAddCity.Name = "boxAddCity";
-            boxAddCity.Size = new Size(210, 23);
-            boxAddCity.TabIndex = 1;
             // 
             // cmbCityToRemove
             // 
@@ -338,6 +331,14 @@ namespace SmartTravelPlanner
             // 
             travelerViewModelBindingSource.DataSource = typeof(TravelerViewModel);
             // 
+            // cmbAddCity
+            // 
+            cmbAddCity.FormattingEnabled = true;
+            cmbAddCity.Location = new Point(97, 161);
+            cmbAddCity.Name = "cmbAddCity";
+            cmbAddCity.Size = new Size(189, 23);
+            cmbAddCity.TabIndex = 18;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -389,7 +390,7 @@ namespace SmartTravelPlanner
         private ComboBox cmbCityToRemove;
         private Button btnRemoveCity;
         private Button btnAddCity;
-        private TextBox boxAddCity;
         private BindingSource travelerViewModelBindingSource;
+        private ComboBox cmbAddCity;
     }
 }
