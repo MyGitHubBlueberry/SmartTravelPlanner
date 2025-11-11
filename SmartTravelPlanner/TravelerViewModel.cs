@@ -38,11 +38,8 @@ public class TravelerViewModel : INotifyPropertyChanged
         get { return location; }
         set 
         {
-            string formattedValue = FormatAsTitleCase(value);
-            if (location == formattedValue)
-                return;
-            location = formattedValue;
-            traveler?.SetLocation(formattedValue);
+            location = value;
+            traveler?.SetLocation(value);
             OnPropertyChanged();
         }
     }
@@ -51,10 +48,7 @@ public class TravelerViewModel : INotifyPropertyChanged
     {
         get { return destination; }
         set {
-            string formattedValue = FormatAsTitleCase(value);
-            if (destination == formattedValue)
-                return;
-            destination = formattedValue;
+            destination = value;
             OnPropertyChanged();
         }
     }
@@ -75,10 +69,7 @@ public class TravelerViewModel : INotifyPropertyChanged
     { 
         get { return cityToAdd; } 
         set {
-            string formattedValue = FormatAsTitleCase(value);
-            if (cityToAdd == formattedValue)
-                return;
-            cityToAdd = formattedValue;
+            cityToAdd = value;
             OnPropertyChanged();
         }
     }
@@ -137,6 +128,8 @@ public class TravelerViewModel : INotifyPropertyChanged
         if (traveler.PlanRouteTo(destination, graph)) {
             OnPropertyChanged(nameof(Route));
             OnPropertyChanged(nameof(Distance));
+            CityToRemove = Route.FirstOrDefault() ?? "";
+            OnPropertyChanged(nameof(CityToRemove));
             return true;
         }
         return false;
@@ -147,9 +140,9 @@ public class TravelerViewModel : INotifyPropertyChanged
             throw new InvalidOperationException("Traveler is not created. Create a traveler first.");
         if (string.IsNullOrEmpty(cityToAdd)) {
             throw new InvalidOperationException("Can't add an empty city.");
-            return;
         }
         traveler.AddCity(cityToAdd);
+        CityToRemove = cityToAdd;
         CityToAdd = "";
         OnPropertyChanged(nameof(Route));
     }
@@ -162,6 +155,8 @@ public class TravelerViewModel : INotifyPropertyChanged
         }
         traveler.RemoveCity(cityToRemove);
         OnPropertyChanged(nameof(Route));
+        CityToRemove = Route.FirstOrDefault() ?? "";
+        OnPropertyChanged(nameof(CityToRemove));
     }
 
     public void ClearRoute() {
@@ -170,7 +165,8 @@ public class TravelerViewModel : INotifyPropertyChanged
         traveler.ClearRoute();
         OnPropertyChanged(nameof(Route));
         OnPropertyChanged(nameof(Distance));
-        OnPropertyChanged(nameof(Distance));
+        CityToRemove = "";
+        OnPropertyChanged(nameof(CityToRemove));
     }
 
     // Boilerplate code for INotifyPropertyChanged
@@ -178,13 +174,5 @@ public class TravelerViewModel : INotifyPropertyChanged
     protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    private string FormatAsTitleCase(string input)
-    {
-        if (string.IsNullOrEmpty(input))
-            return input;
-
-        return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input.ToLower());
     }
 }

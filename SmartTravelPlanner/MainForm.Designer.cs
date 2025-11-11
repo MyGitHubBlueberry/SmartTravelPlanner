@@ -72,7 +72,7 @@ namespace SmartTravelPlanner
             boxName.Location = new Point(128, 26);
             boxName.Name = "boxName";
             boxName.Size = new Size(100, 23);
-            boxName.TabIndex = 0;
+            boxName.TabIndex = 1;
             // 
             // lblName
             // 
@@ -80,7 +80,7 @@ namespace SmartTravelPlanner
             lblName.Location = new Point(16, 26);
             lblName.Name = "lblName";
             lblName.Size = new Size(42, 15);
-            lblName.TabIndex = 1;
+            lblName.TabIndex = 0;
             lblName.Text = "Name:";
             // 
             // lblStartingLocation
@@ -89,24 +89,22 @@ namespace SmartTravelPlanner
             lblStartingLocation.Location = new Point(16, 60);
             lblStartingLocation.Name = "lblStartingLocation";
             lblStartingLocation.Size = new Size(97, 15);
-            lblStartingLocation.TabIndex = 2;
+            lblStartingLocation.TabIndex = 3;
             lblStartingLocation.Text = "Starting location:";
-            
             // 
             // boxStartingLocation
             // 
             boxStartingLocation.Location = new Point(128, 58);
             boxStartingLocation.Name = "boxStartingLocation";
             boxStartingLocation.Size = new Size(100, 23);
-            boxStartingLocation.TabIndex = 3;
-            
+            boxStartingLocation.TabIndex = 2;
             // 
             // btnCreateTraveler
             // 
             btnCreateTraveler.Location = new Point(64, 112);
             btnCreateTraveler.Name = "btnCreateTraveler";
             btnCreateTraveler.Size = new Size(108, 23);
-            btnCreateTraveler.TabIndex = 4;
+            btnCreateTraveler.TabIndex = 3;
             btnCreateTraveler.Text = "Create Traveler";
             btnCreateTraveler.UseVisualStyleBackColor = true;
             // 
@@ -122,7 +120,7 @@ namespace SmartTravelPlanner
             grbTravaler.Name = "grbTravaler";
             grbTravaler.Padding = new Padding(3, 2, 3, 2);
             grbTravaler.Size = new Size(249, 155);
-            grbTravaler.TabIndex = 5;
+            grbTravaler.TabIndex = 1;
             grbTravaler.TabStop = false;
             grbTravaler.Text = "Basic info";
             // 
@@ -137,7 +135,7 @@ namespace SmartTravelPlanner
             grbActions.Name = "grbActions";
             grbActions.Padding = new Padding(3, 2, 3, 2);
             grbActions.Size = new Size(102, 155);
-            grbActions.TabIndex = 6;
+            grbActions.TabIndex = 3;
             grbActions.TabStop = false;
             grbActions.Text = "Actions";
             // 
@@ -147,7 +145,7 @@ namespace SmartTravelPlanner
             btnLoad.Margin = new Padding(3, 2, 3, 2);
             btnLoad.Name = "btnLoad";
             btnLoad.Size = new Size(82, 22);
-            btnLoad.TabIndex = 6;
+            btnLoad.TabIndex = 2;
             btnLoad.Text = "Load";
             btnLoad.UseVisualStyleBackColor = true;
             // 
@@ -157,7 +155,7 @@ namespace SmartTravelPlanner
             btnClear.Margin = new Padding(3, 2, 3, 2);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(82, 22);
-            btnClear.TabIndex = 5;
+            btnClear.TabIndex = 3;
             btnClear.Text = "Clear Route";
             btnClear.UseVisualStyleBackColor = true;
             // 
@@ -177,7 +175,7 @@ namespace SmartTravelPlanner
             btnSave.Margin = new Padding(3, 2, 3, 2);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(82, 22);
-            btnSave.TabIndex = 3;
+            btnSave.TabIndex = 1;
             btnSave.Text = "Save";
             btnSave.UseVisualStyleBackColor = true;
             // 
@@ -192,7 +190,7 @@ namespace SmartTravelPlanner
             grbPlans.Name = "grbPlans";
             grbPlans.Padding = new Padding(3, 2, 3, 2);
             grbPlans.Size = new Size(280, 156);
-            grbPlans.TabIndex = 7;
+            grbPlans.TabIndex = 2;
             grbPlans.TabStop = false;
             grbPlans.Text = "Map and Route planning";
             // 
@@ -202,7 +200,7 @@ namespace SmartTravelPlanner
             btnPlan.Margin = new Padding(3, 2, 3, 2);
             btnPlan.Name = "btnPlan";
             btnPlan.Size = new Size(133, 23);
-            btnPlan.TabIndex = 7;
+            btnPlan.TabIndex = 3;
             btnPlan.Text = "Plan Route";
             btnPlan.UseVisualStyleBackColor = true;
             // 
@@ -212,7 +210,7 @@ namespace SmartTravelPlanner
             btnLoadMap.Margin = new Padding(3, 2, 3, 2);
             btnLoadMap.Name = "btnLoadMap";
             btnLoadMap.Size = new Size(133, 22);
-            btnLoadMap.TabIndex = 6;
+            btnLoadMap.TabIndex = 1;
             btnLoadMap.Text = "Load Map";
             btnLoadMap.UseVisualStyleBackColor = true;
             // 
@@ -222,16 +220,15 @@ namespace SmartTravelPlanner
             lblDestination.Location = new Point(20, 68);
             lblDestination.Name = "lblDestination";
             lblDestination.Size = new Size(70, 15);
-            lblDestination.TabIndex = 4;
+            lblDestination.TabIndex = 6;
             lblDestination.Text = "Destination:";
-            
             // 
             // boxDestination
             // 
             boxDestination.Location = new Point(131, 65);
             boxDestination.Name = "boxDestination";
             boxDestination.Size = new Size(134, 23);
-            boxDestination.TabIndex = 5;
+            boxDestination.TabIndex = 2;
             // 
             // grbResults
             // 
@@ -248,7 +245,7 @@ namespace SmartTravelPlanner
             grbResults.Name = "grbResults";
             grbResults.Padding = new Padding(3, 2, 3, 2);
             grbResults.Size = new Size(642, 198);
-            grbResults.TabIndex = 8;
+            grbResults.TabIndex = 4;
             grbResults.TabStop = false;
             grbResults.Text = "Route Details";
             // 
@@ -257,7 +254,7 @@ namespace SmartTravelPlanner
             boxAddCity.Location = new Point(97, 162);
             boxAddCity.Name = "boxAddCity";
             boxAddCity.Size = new Size(210, 23);
-            boxAddCity.TabIndex = 15;
+            boxAddCity.TabIndex = 1;
             // 
             // cmbCityToRemove
             // 
@@ -265,14 +262,14 @@ namespace SmartTravelPlanner
             cmbCityToRemove.Location = new Point(414, 161);
             cmbCityToRemove.Name = "cmbCityToRemove";
             cmbCityToRemove.Size = new Size(207, 23);
-            cmbCityToRemove.TabIndex = 14;
+            cmbCityToRemove.TabIndex = 3;
             // 
             // btnRemoveCity
             // 
             btnRemoveCity.Location = new Point(324, 161);
             btnRemoveCity.Name = "btnRemoveCity";
             btnRemoveCity.Size = new Size(75, 23);
-            btnRemoveCity.TabIndex = 13;
+            btnRemoveCity.TabIndex = 4;
             btnRemoveCity.Text = "Remove City";
             btnRemoveCity.UseVisualStyleBackColor = true;
             // 
@@ -281,7 +278,7 @@ namespace SmartTravelPlanner
             btnAddCity.Location = new Point(16, 161);
             btnAddCity.Name = "btnAddCity";
             btnAddCity.Size = new Size(75, 23);
-            btnAddCity.TabIndex = 12;
+            btnAddCity.TabIndex = 2;
             btnAddCity.Text = "Add City";
             btnAddCity.UseVisualStyleBackColor = true;
             // 
@@ -291,9 +288,8 @@ namespace SmartTravelPlanner
             lblDistNumber.Location = new Point(108, 24);
             lblDistNumber.Name = "lblDistNumber";
             lblDistNumber.Size = new Size(13, 15);
-            lblDistNumber.TabIndex = 11;
+            lblDistNumber.TabIndex = 14;
             lblDistNumber.Text = "0";
-            
             // 
             // lblRoute
             // 
@@ -301,7 +297,7 @@ namespace SmartTravelPlanner
             lblRoute.Location = new Point(16, 46);
             lblRoute.Name = "lblRoute";
             lblRoute.Size = new Size(41, 15);
-            lblRoute.TabIndex = 10;
+            lblRoute.TabIndex = 15;
             lblRoute.Text = "Route:";
             // 
             // lblDistText
@@ -310,9 +306,8 @@ namespace SmartTravelPlanner
             lblDistText.Location = new Point(16, 24);
             lblDistText.Name = "lblDistText";
             lblDistText.Size = new Size(82, 15);
-            lblDistText.TabIndex = 9;
+            lblDistText.TabIndex = 16;
             lblDistText.Text = "Total distance:";
-            
             // 
             // lsbRoute
             // 
@@ -323,7 +318,7 @@ namespace SmartTravelPlanner
             lsbRoute.Name = "lsbRoute";
             lsbRoute.SelectionMode = SelectionMode.MultiSimple;
             lsbRoute.Size = new Size(605, 79);
-            lsbRoute.TabIndex = 8;
+            lsbRoute.TabIndex = 17;
             // 
             // fdSaveTraveler
             // 

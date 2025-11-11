@@ -20,14 +20,26 @@ public partial class MainForm : Form
 
     private void BindFileds()
     {
+        DataSourceUpdateMode updateMode = DataSourceUpdateMode.OnValidation;
+        ConvertEventHandler formatting = new ConvertEventHandler(TitleCase);
+
         boxName.DataBindings.Add("Text", viewModel,
-            nameof(viewModel.NewName), false, DataSourceUpdateMode.OnPropertyChanged);
-        boxStartingLocation.DataBindings.Add("Text", viewModel,
-            nameof(viewModel.CurrentLocation), false, DataSourceUpdateMode.OnPropertyChanged);
-        boxDestination.DataBindings.Add("Text", viewModel,
-            nameof(viewModel.Destination), false, DataSourceUpdateMode.OnPropertyChanged);
-        boxAddCity.DataBindings.Add("Text", viewModel,
-            nameof(viewModel.CityToAdd), false, DataSourceUpdateMode.OnPropertyChanged);
+            nameof(viewModel.NewName), false, updateMode);
+
+        var boxStartingLocationBinding = new Binding("Text", viewModel,
+            nameof(viewModel.CurrentLocation), false, updateMode);
+        boxStartingLocation.DataBindings.Add(boxStartingLocationBinding);
+        boxStartingLocationBinding.Parse += formatting;
+
+        var boxDestinationBinding = new Binding("Text", viewModel,
+            nameof(viewModel.Destination), false, updateMode);
+        boxDestination.DataBindings.Add(boxDestinationBinding);
+        boxDestinationBinding.Parse += formatting;
+
+        var boxAddCityBinding = new Binding("Text", viewModel,
+            nameof(viewModel.CityToAdd), false, updateMode);
+        boxAddCity.DataBindings.Add(boxAddCityBinding);
+        boxAddCityBinding.Parse += formatting;
 
         lsbRoute.DataBindings.Add("DataSource", viewModel,
             nameof(TravelerViewModel.Route));
@@ -41,6 +53,16 @@ public partial class MainForm : Form
             nameof(viewModel.JoiedRoute));
         lblDistNumber.DataBindings.Add("Text", viewModel,
             nameof(viewModel.Distance));
+    }
+
+    private void TitleCase(object sender, ConvertEventArgs args)
+    {
+        if (args.DesiredType != typeof(string) || args.Value == null)
+            return;
+        string? input = args.Value.ToString();
+        if (String.IsNullOrEmpty(input) || String.IsNullOrWhiteSpace(input))
+            return;
+        args.Value = System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input);
     }
 
     private void BindButtons()
@@ -73,6 +95,13 @@ public partial class MainForm : Form
         btnRemoveCity.Click += (s, e) => RemoveCity();
         btnClear.Click += (s, e) => ClearRoute();
         btnExit.Click += (s, e) => Close();
+        cmbCityToRemove.SelectedValueChanged += (s, e) =>
+        {
+            if (viewModel.CityToRemove == null)
+            {
+                viewModel.CityToRemove = viewModel.Route.FirstOrDefault() ?? "";
+            }
+        };
     }
 
     private void CreateTraveler()
