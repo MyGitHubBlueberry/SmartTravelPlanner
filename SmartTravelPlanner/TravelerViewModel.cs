@@ -13,27 +13,27 @@ public class TravelerViewModel : INotifyPropertyChanged
     private string newName;
     private string cityToRemove;
     private string cityToAdd;
-    private List<string> _availableNextCities = new List<string>();
+    private List<string> availableNextCities = new List<string>();
 
     private void UpdateAvailableNextCities()
     {
-        if (graph == null || traveler == null)
+        if (graph is null || traveler is null)
         {
-            AvailableNextCities = new List<string>();
+            AvailableNextCities.Clear();
             return;
         }
 
         string? lastCity = Route.LastOrDefault();
         if (!string.IsNullOrEmpty(lastCity))
         {
-            // Added new method GetNeighbors to CityGraph
             AvailableNextCities = graph.GetNeighbors(lastCity);
         }
         else
         {
-            // if no cities in route, get neighbors of current location
             AvailableNextCities = graph.GetNeighbors(traveler.GetLocation());
         }
+        cityToAdd = availableNextCities.FirstOrDefault() ?? "";
+        OnPropertyChanged(nameof(CityToAdd));
     }
 
     public TravelerViewModel() { }
@@ -91,6 +91,8 @@ public class TravelerViewModel : INotifyPropertyChanged
     { 
         get { return cityToAdd; } 
         set {
+            if (cityToAdd == value)
+                return;
             cityToAdd = value;
             OnPropertyChanged();
         }
@@ -127,7 +129,6 @@ public class TravelerViewModel : INotifyPropertyChanged
         traveler.SetLocation(CurrentLocation);
         OnPropertyChanged(nameof(Route));
         OnPropertyChanged(nameof(Distance));
-        // update available next cities, if traveler was recreated with loaded map
         if (graph is not null)
         {
             UpdateAvailableNextCities();
@@ -212,10 +213,10 @@ public class TravelerViewModel : INotifyPropertyChanged
 
     public List<string> AvailableNextCities
     {
-        get { return _availableNextCities; }
+        get { return availableNextCities; }
         set
         {
-            _availableNextCities = value;
+            availableNextCities = value;
             OnPropertyChanged();
         }
     }

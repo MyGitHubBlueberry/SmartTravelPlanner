@@ -95,13 +95,6 @@ public partial class MainForm : Form
         btnRemoveCity.Click += (s, e) => RemoveCity();
         btnClear.Click += (s, e) => ClearRoute();
         btnExit.Click += (s, e) => Close();
-        cmbCityToRemove.SelectedValueChanged += (s, e) =>
-        {
-            if (viewModel.CityToRemove == null)
-            {
-                viewModel.CityToRemove = viewModel.Route.FirstOrDefault() ?? "";
-            }
-        };
     }
 
     private void CreateTraveler()
@@ -169,7 +162,7 @@ public partial class MainForm : Form
             viewModel.Load(fdLoadTraveler.FileName);
             MessageBox.Show("Traveler loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             MessageBox.Show($"Invalid .json file during loading", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
