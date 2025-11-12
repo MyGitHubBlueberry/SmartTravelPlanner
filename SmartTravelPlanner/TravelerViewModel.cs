@@ -166,7 +166,7 @@ public class TravelerViewModel : INotifyPropertyChanged
         if (traveler.PlanRouteTo(destination, graph)) {
             OnPropertyChanged(nameof(Route));
             OnPropertyChanged(nameof(Distance));
-            CityToRemove = Route.FirstOrDefault() ?? "";
+            CityToRemove = Route.LastOrDefault() ?? "";
             OnPropertyChanged(nameof(CityToRemove));
             UpdateAvailableNextCities();
             return true;
@@ -195,7 +195,7 @@ public class TravelerViewModel : INotifyPropertyChanged
         }
         traveler.RemoveCity(cityToRemove);
         OnPropertyChanged(nameof(Route));
-        CityToRemove = Route.FirstOrDefault() ?? "";
+        CityToRemove = Route.LastOrDefault() ?? "";
         OnPropertyChanged(nameof(CityToRemove));
         UpdateAvailableNextCities();
     }

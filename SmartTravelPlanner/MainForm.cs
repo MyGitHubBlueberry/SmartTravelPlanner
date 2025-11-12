@@ -186,6 +186,10 @@ public partial class MainForm : Form
         try
         {
             viewModel.RemoveCity();
+            if (string.IsNullOrEmpty(viewModel.CityToRemove))
+            {
+                cmbCityToRemove.Text = "";
+            }
         }
         catch (InvalidOperationException ex)
         {
@@ -199,6 +203,7 @@ public partial class MainForm : Form
         try
         {
             viewModel.ClearRoute();
+            cmbCityToRemove.Text = "";
         }
         catch (InvalidOperationException ex)
         {
