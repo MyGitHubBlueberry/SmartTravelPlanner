@@ -48,6 +48,7 @@ namespace SmartTravelPlanner
             lblDestination = new Label();
             boxDestination = new TextBox();
             grbResults = new GroupBox();
+            cmbAddCity = new ComboBox();
             cmbCityToRemove = new ComboBox();
             btnRemoveCity = new Button();
             btnAddCity = new Button();
@@ -59,7 +60,6 @@ namespace SmartTravelPlanner
             fdLoadTraveler = new OpenFileDialog();
             fdLoadMap = new OpenFileDialog();
             travelerViewModelBindingSource = new BindingSource(components);
-            cmbAddCity = new ComboBox();
             grbTravaler.SuspendLayout();
             grbActions.SuspendLayout();
             grbPlans.SuspendLayout();
@@ -249,6 +249,14 @@ namespace SmartTravelPlanner
             grbResults.TabStop = false;
             grbResults.Text = "Route Details";
             // 
+            // cmbAddCity
+            // 
+            cmbAddCity.FormattingEnabled = true;
+            cmbAddCity.Location = new Point(97, 161);
+            cmbAddCity.Name = "cmbAddCity";
+            cmbAddCity.Size = new Size(189, 23);
+            cmbAddCity.TabIndex = 18;
+            // 
             // cmbCityToRemove
             // 
             cmbCityToRemove.FormattingEnabled = true;
@@ -319,7 +327,6 @@ namespace SmartTravelPlanner
             // 
             // fdLoadTraveler
             // 
-            fdLoadTraveler.FileName = "openFileDialog1";
             fdLoadTraveler.Title = "Load Traveler";
             // 
             // fdLoadMap
@@ -330,14 +337,6 @@ namespace SmartTravelPlanner
             // travelerViewModelBindingSource
             // 
             travelerViewModelBindingSource.DataSource = typeof(TravelerViewModel);
-            // 
-            // cmbAddCity
-            // 
-            cmbAddCity.FormattingEnabled = true;
-            cmbAddCity.Location = new Point(97, 161);
-            cmbAddCity.Name = "cmbAddCity";
-            cmbAddCity.Size = new Size(189, 23);
-            cmbAddCity.TabIndex = 18;
             // 
             // MainForm
             // 

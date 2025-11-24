@@ -86,7 +86,7 @@ public class TravelerViewModel : INotifyPropertyChanged
         }
     }
 
-    //todo maybe do not allow duplicate cities
+
     public string CityToAdd
     { 
         get { return cityToAdd; } 
@@ -124,7 +124,7 @@ public class TravelerViewModel : INotifyPropertyChanged
 
     public void CreateTraveler() {
         if (string.IsNullOrEmpty(location) || string.IsNullOrEmpty(newName))
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(Error.EMPTY_TRAV_OR_DEST_ERROR);
         traveler = new Traveler(NewName);
         traveler.SetLocation(CurrentLocation);
         OnPropertyChanged(nameof(Route));
@@ -137,12 +137,19 @@ public class TravelerViewModel : INotifyPropertyChanged
 
     public void Save(string filePath) { 
         if (traveler is null)
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(Error.EMPTY_TRAV_OR_DEST_ERROR);
         traveler.SaveToFile(filePath);
     }
 
     public void Load(string filePath) {
-        traveler = Traveler.LoadFromFile(filePath);
+        try
+        {
+            traveler = Traveler.LoadFromFile(filePath);
+        }
+        catch (Exception)
+        {
+            throw new InvalidOperationException(Error.JSON_PARSE_ERROR);
+        }
         NewName = traveler.GetName();
         CurrentLocation = traveler.GetLocation();
         OnPropertyChanged(nameof(Route));
@@ -151,18 +158,24 @@ public class TravelerViewModel : INotifyPropertyChanged
     }
 
     public void LoadMap(string filePath) {
-        graph = CityGraph.LoadFromFile(filePath);
+        try
+        {
+            graph = CityGraph.LoadFromFile(filePath);
+        } 
+        catch(Exception)
+        {
+            throw new InvalidOperationException(Error.MAP_ERROR);
+        }
         UpdateAvailableNextCities();
     }
 
     public bool PlanRoute() {
-        //todo better exceptions
         if (traveler is null) 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(Error.EMPTY_TRAV_OR_DEST_ERROR);
         if (graph is null) 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(Error.MAP_ERROR);
         if (string.IsNullOrEmpty(destination))
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(Error.DEST_ERROR);
         if (traveler.PlanRouteTo(destination, graph)) {
             OnPropertyChanged(nameof(Route));
             OnPropertyChanged(nameof(Distance));
@@ -176,10 +189,9 @@ public class TravelerViewModel : INotifyPropertyChanged
 
     public void AddCity() {
         if (traveler is null) 
-            throw new InvalidOperationException("Traveler is not created. Create a traveler first.");
-        if (string.IsNullOrEmpty(cityToAdd)) {
-            throw new InvalidOperationException("Can't add an empty city.");
-        }
+            throw new InvalidOperationException(Error.EMPTY_TRAV_OR_DEST_ERROR);
+        if (string.IsNullOrEmpty(cityToAdd))
+            return;
         traveler.AddCity(cityToAdd);
         CityToRemove = cityToAdd;
         CityToAdd = "";
@@ -189,9 +201,9 @@ public class TravelerViewModel : INotifyPropertyChanged
 
     public void RemoveCity() {
         if (traveler is null) 
-            throw new InvalidOperationException("Traveler is not created. Create a traveler first.");
+            throw new InvalidOperationException(Error.EMPTY_TRAV_OR_DEST_ERROR);
         if (string.IsNullOrEmpty(cityToRemove)) {
-            throw new InvalidOperationException("Can't remove an empty city.");
+            return;
         }
         traveler.RemoveCity(cityToRemove);
         OnPropertyChanged(nameof(Route));
@@ -202,7 +214,7 @@ public class TravelerViewModel : INotifyPropertyChanged
 
     public void ClearRoute() {
         if (traveler is null) 
-            throw new InvalidOperationException("Traveler is not created. Create a traveler first.");
+            throw new InvalidOperationException(Error.EMPTY_TRAV_OR_DEST_ERROR);
         traveler.ClearRoute();
         OnPropertyChanged(nameof(Route));
         OnPropertyChanged(nameof(Distance));

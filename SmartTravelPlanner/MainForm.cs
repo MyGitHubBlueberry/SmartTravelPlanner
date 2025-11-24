@@ -72,7 +72,7 @@ public partial class MainForm : Form
         {
             if (!viewModel.IsTravelerCreated)
             {
-                MessageBox.Show("Please create a traveler first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Error.EMPTY_TRAV_OR_DEST_ERROR, Error.ERROR_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             fdLoadMap.ShowDialog();
@@ -83,7 +83,7 @@ public partial class MainForm : Form
         {
             if (!viewModel.IsTravelerCreated)
             {
-                MessageBox.Show("Please create a traveler first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Error.EMPTY_TRAV_OR_DEST_ERROR, Error.ERROR_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             fdSaveTraveler.ShowDialog();
@@ -99,116 +99,65 @@ public partial class MainForm : Form
 
     private void CreateTraveler()
     {
-        try
-        {
-            viewModel.CreateTraveler();
-            MessageBox.Show($"Traveler '{viewModel.NewName}' created and set to '{viewModel.CurrentLocation}'.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-        catch (InvalidOperationException)
-        {
-            MessageBox.Show("Please enter both a name and a starting location.", "Empty Fields", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        Error.HandleError(viewModel.CreateTraveler);
     }
 
     private void LoadMap()
     {
-        try
-        {
-            viewModel.LoadMap(fdLoadMap.FileName);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"An error occurred while loading the file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
+        Error.HandleError(() => viewModel.LoadMap(fdLoadMap.FileName));
     }
 
     private void PlanRoute()
     {
-        try
-        {
+        Error.HandleError(() => {
             if (!viewModel.PlanRoute())
-            {
-                MessageBox.Show("Destination is not reachable or not in the map.", "Destination Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            { 
+                MessageBox.Show(Error.DEST_ERROR, Error.ERROR_TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-        catch (InvalidOperationException)
-        {
-            MessageBox.Show("Please ensure that a traveler is created, a map is loaded, and a destination is entered.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        });
     }
 
     private void Save()
     {
-        try
+        Error.HandleError(() =>
         {
             if (Path.GetExtension(fdSaveTraveler.FileName).ToLowerInvariant() != ".json")
             {
                 fdSaveTraveler.FileName = Path.ChangeExtension(fdSaveTraveler.FileName, ".json");
             }
             viewModel.Save(fdSaveTraveler.FileName);
-            MessageBox.Show("Traveler saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Could not save file: {ex.Message}", "Save Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+            //MessageBox.Show("Traveler saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        });
     }
 
     private void LoadTraveler()
     {
-        try
-        {
-            viewModel.Load(fdLoadTraveler.FileName);
-            MessageBox.Show("Traveler loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-        catch (Exception)
-        {
-            MessageBox.Show($"Invalid .json file during loading", "Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
+        Error.HandleError(() => viewModel.Load(fdLoadTraveler.FileName));
+            //MessageBox.Show("Traveler loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
     }
 
     private void AddCity()
     {
-        try
-        {
-            viewModel.AddCity();
-        }
-        catch (InvalidOperationException ex)
-        {
-            MessageBox.Show(ex.Message, "Can't add city", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
+        Error.HandleError(viewModel.AddCity);
+
     }
 
     private void RemoveCity()
     {
-        try
-        {
+        Error.HandleError(() => {
             viewModel.RemoveCity();
             if (string.IsNullOrEmpty(viewModel.CityToRemove))
             {
                 cmbCityToRemove.Text = "";
             }
-        }
-        catch (InvalidOperationException ex)
-        {
-            MessageBox.Show(ex.Message, "Can't remove city", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
+        });
     }
 
     private void ClearRoute()
     {
-        try
-        {
+        Error.HandleError(() => {
             viewModel.ClearRoute();
             cmbCityToRemove.Text = "";
-        }
-        catch (InvalidOperationException ex)
-        {
-            MessageBox.Show(ex.Message, "Can't clear route", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return;
-        }
+        });
     }
 }
