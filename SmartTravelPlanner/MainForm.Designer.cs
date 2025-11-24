@@ -347,6 +347,8 @@ namespace SmartTravelPlanner
             Controls.Add(grbPlans);
             Controls.Add(grbActions);
             Controls.Add(grbTravaler);
+            MaximumSize = new Size(695, 425);
+            MinimumSize = new Size(695, 425);
             Name = "MainForm";
             Text = "Create Traveler";
             grbTravaler.ResumeLayout(false);
