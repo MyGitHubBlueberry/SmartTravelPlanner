@@ -1,18 +1,31 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Newtonsoft.Json;
-using System.IO;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Travelling;
+
+internal class TravelerData
+{
+    [JsonPropertyName("name")]
+    public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("currentLocation")]
+    public string CurrentLocation { get; set; } = string.Empty;
+
+    [JsonPropertyName("route")]
+    public List<string> Route { get; set; } = new List<string>();
+}
 
 public class Traveler : ICloneable 
 {
     [JsonProperty] string name;
     [JsonProperty] string currentLocation = "";
     [JsonProperty]
-    [JsonConverter(typeof(FlatStringListConverter))]
+    [Newtonsoft.Json.JsonConverter(typeof(FlatStringListConverter))]
     List<string> route = new List<string>();
 
 
@@ -20,13 +33,6 @@ public class Traveler : ICloneable
 
     public string this[int index] { get => route[index]; }
 
-    [Serializable] public class FileNotFoundException : Exception { }
-    [Serializable]
-    public class FileLoadException : Exception
-    {
-        public FileLoadException() { }
-        public FileLoadException(string? message) : base(message) { }
-    }
 
     public string GetName() => name;
     public string GetLocation() => currentLocation;
@@ -106,17 +112,42 @@ public class Traveler : ICloneable
     public void SaveToFile(string filePath) {
         File.WriteAllText(filePath, JsonConvert.SerializeObject(this, Formatting.Indented));
     }
-    public static Traveler LoadFromFile(string filePath) {
+    public static Traveler LoadFromFile(string filePath)
+    {
         if (!File.Exists(filePath))
-            throw new FileNotFoundException();
-        Traveler t;
+        {
+            throw new FileNotFoundException("File not found.", filePath);
+        }
+
         try
         {
-            t = JsonConvert.DeserializeObject<Traveler>(File.ReadAllText(filePath));
-        } catch (Exception) {
+            string jsonString = File.ReadAllText(filePath);
+            TravelerData? data = System.Text.Json.JsonSerializer.Deserialize<TravelerData>(jsonString);
+
+            if (data == null || data.Name == null)
+            {
+                throw new FileLoadException("Invalid travel data");
+            }
+
+            Traveler traveler = new Traveler(data.Name);
+            traveler.SetLocation(data.CurrentLocation ?? string.Empty);
+
+            if (data.Route != null)
+            {
+                data.Route.ForEach(city => traveler.AddCity(city));
+            }
+
+            return traveler;
+        }
+        catch (JsonException)
+        {
             throw new FileLoadException("Invalid travel data");
         }
-        return t;
+        catch (Exception ex)
+        {
+            if (ex is FileLoadException) throw;
+            throw new FileLoadException("Invalid travel data");
+        }
     }
 
     static string ToTitle(string s) {
@@ -125,7 +156,8 @@ public class Traveler : ICloneable
                 .Split(' ', System.StringSplitOptions.RemoveEmptyEntries)
                 .Select(word => char.ToUpper(word[0]) + word.Substring(1).ToLower()));
     }
-    class FlatStringListConverter : JsonConverter<List<string>>
+
+    class FlatStringListConverter : Newtonsoft.Json.JsonConverter<List<string>>
     {
         public override void WriteJson(JsonWriter writer, List<string>? value, JsonSerializer serializer)
         {

@@ -139,7 +139,6 @@ public partial class MainForm : Form
     private void AddCity()
     {
         Error.HandleError(viewModel.AddCity);
-
     }
 
     private void RemoveCity()
