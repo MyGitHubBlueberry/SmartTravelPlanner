@@ -202,10 +202,24 @@ public class TravelerViewModel : INotifyPropertyChanged
     public void RemoveCity() {
         if (traveler is null) 
             throw new InvalidOperationException(Error.EMPTY_TRAV_OR_DEST_ERROR);
-        if (string.IsNullOrEmpty(cityToRemove)) {
+        if (string.IsNullOrEmpty(cityToRemove))
             return;
-        }
+        if (graph is null) 
+            throw new InvalidOperationException(Error.MAP_ERROR);
+
+        var tuple = traveler.GetRouteNeighbors(cityToRemove);
+        if (!tuple.HasValue) return;
+        
+        (string? from, string? to) = tuple.Value;
         traveler.RemoveCity(cityToRemove);
+        if (from is not null && to is not null)
+        {
+            if (!graph.GetNeighbors(from).Contains(to))
+            {
+                traveler.DeleteRouteFrom(to);
+            }
+        }
+
         OnPropertyChanged(nameof(Route));
         CityToRemove = Route.LastOrDefault() ?? "";
         OnPropertyChanged(nameof(CityToRemove));

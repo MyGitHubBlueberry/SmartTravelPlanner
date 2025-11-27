@@ -186,4 +186,35 @@ public class Traveler : ICloneable
             return token.ToObject<List<string>>();
         }
     }
+
+    public (string?, string?)? GetRouteNeighbors(String city)
+    {
+        int ind = route.IndexOf(city);
+        if (ind == -1)
+        {
+            return null;
+        }
+
+        (string?, string?) neighbors = (null, null);
+        if (ind > 0)
+        {
+            neighbors.Item1 = route[ind - 1];
+        }
+        if (ind < route.Count - 1)
+        {
+            neighbors.Item2 = route[ind + 1];
+        }
+
+        return neighbors;
+    }
+
+    public void DeleteRouteFrom(string city)
+    {
+        int ind = route.IndexOf(city);
+        if (ind == -1)
+        {
+            return;
+        }
+        route.RemoveRange(ind, route.Count - ind);
+    }
 }
